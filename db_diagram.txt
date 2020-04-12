@@ -1,0 +1,96 @@
+Table Facility{
+  id int [pk]
+  name varchar
+  description text
+}
+
+Enum HomestayType{
+  Apartment
+  House
+}
+
+Table Homestay as H{
+  id int [pk]
+  address varchar
+  type HomestayType
+  title varchar
+  description text
+  facilities Facility
+
+  rooms Room
+
+  preffered_length_min smallint
+  preffered_length_max smallint
+  
+  currency varchar
+  
+  used_kitchen boolean
+  provide_meals boolean
+  
+  rule varchar
+  
+  family_smoke boolean
+  guest_smoke boolean
+  
+  price Price
+}
+
+Table Price{
+  id int [pk]
+  include_breakfast boolean
+  currency varchar
+  amount float
+  price_for_num_guest float
+}
+
+Table Room{
+  id int [pk]
+  name varchar
+  num_of_beds positive_small_int
+  num_of_guest positive_small_int
+  bath_room_type Enum
+  type RoomTypeChoice
+}
+
+Table Address{
+  id int [pk]
+  country varchar 
+  city varchar
+  address_line1 varchar
+  address_line2 varchar
+  area varchar
+  state varchar
+  postcode int
+  
+  facilities Facility
+  about varchar
+}
+
+
+Table Contract{
+  state StateChoice
+  vendor vendor
+  purchaser Purchaser
+  homestay Homestay
+  room
+  from datetime
+  to datetime
+  
+  rating_after_complete float 
+  other_info vv
+}
+
+
+Ref: "Facility"."id" > "Homestay"."facilities" // many-to-many
+
+Ref: "Homestay"."address" < "Address"."id"
+
+
+Ref: "Homestay"."price" < "Price"."id"
+
+Ref: "Homestay"."rooms" < "Room"."id"
+
+Ref: "Address"."facilities" < "Facility"."id"
+
+
+Ref: "Homestay"."id" < "Contract"."homestay"
