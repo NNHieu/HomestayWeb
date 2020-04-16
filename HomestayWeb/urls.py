@@ -21,8 +21,8 @@ from django.urls import include
 from HomestayWeb import settings
 
 urlpatterns = [
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('ums/', include('ums.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
+    path('account/', include('ums.urls')),
     path('homestay/', include('hms.urls')),
     path('admin/', admin.site.urls),
 ]

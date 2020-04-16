@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Page</title>
+    <link rel="stylesheet" text="text/css" href="{% static "hms/browse/values.css" %}">
+    <link rel="stylesheet" text="text/css" href="{% static "hms/browse/default.css" %}">
+    <link rel="stylesheet" text="text/css" href="{% static "hms/browse/header.css" %}">
+    <link rel="stylesheet" text="text/css" href="{% static "hms/browse/body.css" %}">
+</head>
+<body>
+    <div id="nav" data-guest="">
+        <div class="header-wrapper">
+            <a class="logo" >
+                <img src="{% static "hms/logo.png" %}" height="30" width="50">
+            </a>
+            <div class="nav-links">
+                {% if not user.is_authenticated  %}
+                <a href="{% url "ums:login" %}?next=/homestay">
+                    <div class="sign-in-wrapper">
+                        <span>Login</span>
+                    </div>
+                </a>
+                <a href="{% url "ums:register" %}?next=/homestay">
+                    <div class="sign-in-wrapper">
+                        <span>Register</span>
+                    </div>
+                </a>
+                {% else %}
+                <a href="{% url "ums:logout" %}">
+                <div class="sign-in-wrapper">
+                    <span>Logout</span>
+                </div>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div id="main" class>
+        <div class='preview-section'>
+            <h1 class='preview-section-header'>Header 1</h1>
+            <div class='results'>
+                {% for homestay in homestay_list %}
+                <div class='result-card'>
+                {% with homestay.reviewimage_set.all|first as review_image %}
+                {% if review_image %}
+                    <a class='cover' style="background-image: url({{ review_image.image.url }});"></a>
+                {% else %}
+                    <a class='cover' style="background-image: url({% get_media_prefix %}images/download.png);"></a>
+                {% endif %}
+                {% endwith %}
+                    <div class='data'>
+                        <div class='title-link'><a >{{ homestay.title }}</a></div>
+                        <p class='address'>{{ homestay.address }}</p>
+                        <div class="description">
+                            {{ homestay.description }}
+                        </div>
+                        <div class="facilities">
+                            {% for facility in homestay.facilities.all %}
+                                {% if not facility.address_facility %}
+                                    {% if forloop.last %}
+                                        <span>{{ facility.name }}</span>
+                                    {% else %}
+                                        <span>{{ facility.name }},</span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -5,9 +5,10 @@ from . import views
 
 app_name = 'hms'
 urlpatterns = [
+
     path('', views.BrowseView.as_view(), name='index'),
-    path('upload/', views.upload_view, name='upload'),
-    path('upload/success/', views.upload_success_view, name='upload_success'),
+    # path('upload/', views.upload_view, name='upload'),
+    # path('upload/success/', views.upload_success_view, name='upload_success'),
 ]
 
 if settings.DEBUG:

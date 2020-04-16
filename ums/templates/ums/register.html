@@ -1,0 +1,39 @@
+{% extends "ums/base.html" %}
+{% load static %}
+{% block src_script %}
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="{% static "ums/register.js" %}"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+{% endblock %}
+
+{% block input_fields %}
+    {% for field in form %}
+    <div class="form-group__text">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        <div class="input-line">
+        {% if not field.name == 'password' %}
+            <input type="text" id="{{field.id_for_label}}" name="{{field.name}}" class value="{{ field.value|default_if_none:'' }}" required
+            autocomplete="off" data-validate-url="{% url "ums:validate" %}">
+
+            {% if field.name == 'username' or field.name == 'email' %}
+                <i class='fas fa-check-circle tick' id="i_{{ field.name }}"></i>
+            {% endif %}
+        {% else %}
+            <input type="password" id="{{field.id_for_label}}" name="{{field.name}}" class value required
+            autocomplete="off" data-validate-url="{% url "ums:validate" %}">
+        {% endif %}
+{#                                {% if field.help_text %}#}
+{#                                <p class="help">{{ field.help_text|safe }}</p>#}
+{#                                {% endif %}#}
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block script %}
+    <script>
+        validate_user();
+        validate_email();
+    </script>
+{% endblock %}

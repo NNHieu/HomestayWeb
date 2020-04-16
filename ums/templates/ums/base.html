@@ -1,20 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}My amazing site{% endblock %}</title>
+    <meta charset="UTF-8">
+    <title>{% block title %}Base{% endblock %}</title>
+    <link rel="stylesheet" text="text/css" href="{% static "hms/browse/values.css" %}">
+    <link rel="stylesheet" text="text/css" href="{% static "hms/browse/default.css" %}">
+    <link rel="stylesheet" text="text/css" href="{% static "ums/login/style.css" %}">
+    {% block src_stylesheet %}{% endblock %}
+    {% block src_script %}{% endblock %}
 </head>
-
 <body>
-    <div id="sidebar">
-        {% block sidebar %}
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/blog/">Blog</a></li>
-        </ul>
-        {% endblock %}
+    <div class="container">
+        <div class="content-form">
+            <div class="form-menu"></div>
+            <div class="form-main">
+                <div class="logo"></div>
+                <div class="welcome">
+                    <h2>Welcome</h2>
+                </div>
+                {% block error_alex %}{% endblock %}
+                <form id="login-from" action="" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="input">
+                        {% block input_fields %}{% endblock %}
+                        <div class="form-group__text">
+                            <button id="submit-login" style="width: 100% !important;" type="submit">Register</button>
+                        </div>
+                        <input type="hidden" name="next" value="{{ next }}">
+                    </div>
+                </form>
+            </div>
+            <div class="form-needHelp"></div>
+        </div>
     </div>
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
+    {% block script %}
+    {% endblock %}
 </body>
 </html>
